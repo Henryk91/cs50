@@ -1,0 +1,16 @@
+-- SQL query to list the names of all people who starred in a movie in which Kevin Bacon also starred
+SELECT NAME
+FROM   people
+WHERE  id IN (SELECT DISTINCT person_id
+              FROM   stars
+              WHERE  movie_id IN (SELECT movie_id
+                                  FROM   stars
+                                  WHERE  person_id = (SELECT id
+                                                      FROM   people
+                                                      WHERE  NAME =
+                                                     'Kevin Bacon'
+                                                             AND birth = 1958))
+                     AND NOT person_id = (SELECT id
+                                          FROM   people
+                                          WHERE  NAME = 'Kevin Bacon'
+                                                 AND birth = 1958))
